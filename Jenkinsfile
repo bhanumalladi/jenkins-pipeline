@@ -1,18 +1,23 @@
 pipeline {
    agent any
    environment {
-      IP     = '150.150.150.9'
-      NAME   = ''
+      IP     = "150.150.150.9"
+      NAME   = "Bhanu Teja"
 
 
    }
    stages {
-      stage ('Checkout SCM: GIT') {
+      stage ('Jenkins User Job') {
         steps {
-           echo 'Checkout the code from github...'
- 
+           echo "Hi!!! My Name is ${env.NAME}"
+           echo "I am Executing Declarative Pipeline"
         }
-      } 
+      }
+      stage ('User Confirmation') {
+        steps {
+           input('Do you want to proceed?')
+        }
+      }
       stage ('Build') {
         steps {
            echo 'Build the code...'
@@ -20,19 +25,16 @@ pipeline {
 
         }
       }
-      stage ('Test') {
+      stage ('Testing') {
         steps {
-           echo 'Testing the code/artifact...'         
-
-
+           echo 'Testing the code/artifact...'
         }
       }
       stage ('Deploy: Kubernetes') {
         steps {
-           echo 'Deploying artifact to kubernetes env...'
+           echo 'Deploying artifact to kubernetes environment ${env.IP}...'
 
         }
       }
-    }
-  }
-
+   }
+}
