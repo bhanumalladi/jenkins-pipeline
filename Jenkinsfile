@@ -10,7 +10,7 @@ pipeline {
       stage ('Checkout SCM: GIT') {
         steps {
            echo 'Checkout the code from github...'
-           sh 
+ 
         }
       } 
       stage ('Build') {
