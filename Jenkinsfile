@@ -1,10 +1,9 @@
 pipeline {
    agent any
    environment {
-      IP     = "150.150.150.9"
-      NAME   = "Bhanu Teja"
-
-
+      IP        = "150.150.150.9"
+      NAME      = "Bhanu Teja"
+      NAMESPACE = "bhanu"
    }
    stages {
       stage ('Jenkins User Job') {
@@ -15,25 +14,33 @@ pipeline {
       }
       stage ('User Confirmation') {
         steps {
-           input('Do you want to proceed?')
+           input("Do you want to proceed?")
         }
       }
       stage ('Build') {
         steps {
-           echo 'Build the code...'
+           echo "Build the code..."
 
 
         }
       }
       stage ('Testing') {
         steps {
-           echo 'Testing the code/artifact...'
+           echo "Testing the code/artifact..."
         }
       }
       stage ('Deploy: Kubernetes') {
         steps {
-           echo 'Deploying artifact to kubernetes environment ${env.IP}...'
-
+           echo "Deploying artifact to kubernetes environment ${env.IP}..."
+           switch (namespace) {
+               case "bhanu":
+                 sh("kubectl cluster-info")
+                 sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
+                 sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
+                 sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
+               default:
+                 break
+           }
         }
       }
    }
