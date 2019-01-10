@@ -1,5 +1,5 @@
 pipeline {
-   agent any {
+   agent any
    environment {
       IP     = '150.150.150.9'
       NAME   = ''
@@ -35,4 +35,4 @@ pipeline {
       }
     }
   }
-}
+
