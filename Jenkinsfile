@@ -31,16 +31,17 @@ pipeline {
       }
       stage ('Deploy: Kubernetes') {
         steps {
-           echo "Deploying artifact to kubernetes environment ${env.IP}..."
-           switch (namespace) {
-               case "bhanu":
-                 sh("kubectl cluster-info")
-                 sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
-                 sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
-                 sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
-               default:
-                 break
-           }
+          script {
+             echo "Deploying artifact to kubernetes environment ${env.IP}..."
+             switch (namespace) {
+                 case "bhanu":
+                   sh("kubectl cluster-info")
+                   sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
+                   sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
+                 default:
+                   break
+             } 
+          }
         }
       }
    }
